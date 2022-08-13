@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(opt =>
                     opt.UseSqlServer(builder.Configuration.GetConnectionString("CategoriesConnection")));
 
+
 builder.Services.AddTransient<Repository<Category>>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -30,5 +31,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+DbSeedData.PrepPopulation(app, app.Environment.IsDevelopment());
 
 app.Run();

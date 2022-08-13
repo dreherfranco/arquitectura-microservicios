@@ -27,6 +27,14 @@ namespace CategoryService.Controllers
             return Ok(this.mapper.Map<List<CategoryDTO>>(categories));
         }
         
+        [HttpPost("create")]
+        public async Task<ActionResult<CategoryDTO>> PostTModel(CategoryCreateDTO categoryDTO)
+        {
+            var category = this.mapper.Map<Category>(categoryDTO);
+            category = await this.repository.Add(category);
+            return this.mapper.Map<CategoryDTO>(category);
+        }
+        
         
     }
 }
