@@ -10,6 +10,13 @@ namespace CategoryService.Mapper
         {
             CreateMap<Article, ArticleDTO>()
                 .ReverseMap();
+
+            CreateMap<Article, ArticleDetailDTO>()
+                .ForPath( dest => dest.CategoryDTO.Id, 
+                    opt => opt.MapFrom(
+                        src=>src.CategoryExternalId)
+                    )
+                .ForPath( dest => dest.CategoryDTO.Name, opt => opt.Ignore());
         }
     }
 }

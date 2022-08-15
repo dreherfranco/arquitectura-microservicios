@@ -34,8 +34,8 @@ namespace CategoryService.DbConfiguration
                 Console.WriteLine("--> Seeding Data...");
 
                 context.Articles.AddRange(
-                    new Article(){ Id=1, Name="articulo 1" },
-                    new Article(){ Id=2, Name="articulo 2" }                
+                    new Article(){ Id=1, Name="articulo 1", CategoryExternalId=1 },
+                    new Article(){ Id=2, Name="articulo 2", CategoryExternalId=1 }                
                 );
 
                 context.SaveChanges();

@@ -4,7 +4,7 @@
 
 namespace ArticleService.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,8 @@ namespace ArticleService.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Amount = table.Column<float>(type: "REAL", nullable: false)
+                    Amount = table.Column<float>(type: "REAL", nullable: false),
+                    CategoryExternalId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

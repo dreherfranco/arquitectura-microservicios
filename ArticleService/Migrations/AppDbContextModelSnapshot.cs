@@ -25,6 +25,9 @@ namespace ArticleService.Migrations
                     b.Property<float>("Amount")
                         .HasColumnType("REAL");
 
+                    b.Property<int>("CategoryExternalId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");

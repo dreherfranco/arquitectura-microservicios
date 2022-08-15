@@ -1,3 +1,6 @@
+using System.Linq.Expressions;
+using System.Text;
+using System.Text.Json;
 using AutoMapper;
 using CategoryService.DTOs.CategoryDTO;
 using CategoryService.Models;
@@ -27,6 +30,15 @@ namespace CategoryService.Controllers
             return Ok(this.mapper.Map<List<CategoryDTO>>(categories));
         }
         
+         [HttpGet("get-by-id/{id}")]
+        public ActionResult<CategoryDTO> GetById(int id)
+        {
+            Expression<Func<Category, bool>> filter = x => x.Id == id;
+            var categoryDTO = this.mapper.Map<CategoryDTO>(repository.Get(filter).FirstOrDefault());
+
+            return Ok(categoryDTO);
+        }
+
         [HttpPost("create")]
         public async Task<ActionResult<CategoryDTO>> PostTModel(CategoryCreateDTO categoryDTO)
         {

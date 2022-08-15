@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArticleService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220815022402_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220815181929_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,6 +26,9 @@ namespace ArticleService.Migrations
 
                     b.Property<float>("Amount")
                         .HasColumnType("REAL");
+
+                    b.Property<int>("CategoryExternalId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
