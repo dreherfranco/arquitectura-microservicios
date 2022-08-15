@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using ArticleService.DTOs;
 using ArticleService.SyncDataServices.Http.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ArticleService.SyncDataServices.Http
 {
@@ -19,13 +14,9 @@ namespace ArticleService.SyncDataServices.Http
             _httpClient = httpClient;
             _configuration = configuration;
         }
+
         public async Task<CategoryDTO> GetCategoryById(int categoryExternalId)
         {
-           /* var httpContent = new StringContent(
-                JsonSerializer.Serialize(categoryExternalId),
-                Encoding.UTF8,
-                "application/json");*/
-
             var response = await _httpClient
                           .GetAsync($"{_configuration["CategoryService"]}/get-by-id/{categoryExternalId}");
 
@@ -40,6 +31,26 @@ namespace ArticleService.SyncDataServices.Http
             {
                 Console.WriteLine("--> Sync GET to CategoryService was NOT OK!");
                 return null;
+            }
+        }
+
+        public async Task SendPostRequestToCategories(CategoryDTO categoryDTO)
+        {
+            var httpContent = new StringContent(
+                JsonSerializer.Serialize(categoryDTO),
+                Encoding.UTF8,
+                "application/json");
+
+            var response = await _httpClient
+                            .PostAsync($"{_configuration["CategoryService"]}"/*+URL METODO POST*/, httpContent);
+
+            if(response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("--> Sync POST to CommandService was OK!");
+            }
+            else
+            {
+                Console.WriteLine("--> Sync POST to CommandService was NOT OK!");
             }
         }
     }
