@@ -1,3 +1,5 @@
+using ArticleService.AsyncDataServices;
+using ArticleService.AsyncDataServices.Interfaces;
 using ArticleService.Models;
 using ArticleService.Repository;
 using ArticleService.SyncDataServices.Http;
@@ -11,13 +13,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(opt =>
                     opt.UseSqlite(builder.Configuration.GetConnectionString("ArticlesConnection")));
 
+#region DataServices
+//Async data service
+builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
+//Sync data service
+builder.Services.AddHttpClient<IHttpCategoryDataClient, HttpCategoryDataClient>();
+#endregion DataServices
 
 builder.Services.AddTransient<Repository<Article>>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 
-builder.Services.AddHttpClient<IHttpCategoryDataClient, HttpCategoryDataClient>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

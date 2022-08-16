@@ -1,4 +1,6 @@
 using System.Linq.Expressions;
+using ArticleService.AsyncDataServices.Events;
+using ArticleService.AsyncDataServices.Interfaces;
 using ArticleService.DTOs;
 using ArticleService.Models;
 using ArticleService.Repository;
@@ -14,11 +16,15 @@ namespace ArticleService.Controllers
         private readonly Repository<Article> repository;
         private readonly IMapper mapper;
         private readonly IHttpCategoryDataClient httpCategoryDataClient;
-        public ArticlesController(Repository<Article> repository, IMapper mapper, IHttpCategoryDataClient httpCategoryDataClient)
+        private readonly IMessageBusClient messageBusClient;
+        
+        public ArticlesController(Repository<Article> repository, IMapper mapper, 
+        IHttpCategoryDataClient httpCategoryDataClient, IMessageBusClient messageBusClient)
         {
             this.repository = repository;
             this.mapper = mapper;
             this.httpCategoryDataClient = httpCategoryDataClient;
+            this.messageBusClient = messageBusClient;
         }
 
 
@@ -44,6 +50,29 @@ namespace ArticleService.Controllers
             {
                 Console.WriteLine($"--> Could not get synchronously: {ex.Message}");
             }
+            return Ok(articleDTO);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ArticleDTO>> CreatePlatform(ArticleCreateDTO articleCreateDTO)
+        {
+            var article = mapper.Map<Article>(articleCreateDTO);
+            article = await repository.Add(article);
+
+            var articleDTO = mapper.Map<ArticleDTO>(article);
+
+            //Send Async Message
+            try
+            {
+                var articlePublishedDTO = mapper.Map<ArticlePublishedDTO>(articleDTO);
+                articlePublishedDTO.Event = ArticleEventType.ARTICLE_PUBLISHED;
+                messageBusClient.PublishNewArticle(articlePublishedDTO);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"--> Could not send asynchronously: {ex.Message}");
+            }
+
             return Ok(articleDTO);
         }
     }

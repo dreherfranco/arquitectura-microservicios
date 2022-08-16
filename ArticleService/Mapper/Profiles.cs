@@ -17,6 +17,9 @@ namespace CategoryService.Mapper
                         src=>src.CategoryExternalId)
                     )
                 .ForPath( dest => dest.CategoryDTO.Name, opt => opt.Ignore());
+
+            CreateMap<Article, ArticlePublishedDTO>()
+                .ForMember(dest => dest.Event, opt => opt.Ignore());
         }
     }
 }
