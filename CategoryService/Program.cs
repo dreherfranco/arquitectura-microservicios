@@ -1,4 +1,7 @@
+using CategoryService.AsyncDataServices;
 using CategoryService.DbConfiguration;
+using CategoryService.EventProcessing;
+using CategoryService.EventProcessing.Interfaces;
 using CategoryService.Models;
 using CategoryService.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +19,11 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 builder.Services.AddTransient<Repository<Category>>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+//Subscriber RabbitMQ
+builder.Services.AddHostedService<MessageBusSubscriber>();
+//Procesador de eventos recibidos
+builder.Services.AddSingleton<IEventProcessor, EventProcessor>(); 
 
 var app = builder.Build();
 
