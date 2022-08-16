@@ -11,6 +11,8 @@ namespace CategoryService.Mapper
             CreateMap<Article, ArticleDTO>()
                 .ReverseMap();
 
+            CreateMap<ArticleCreateDTO, Article>();
+
             CreateMap<Article, ArticleDetailDTO>()
                 .ForPath( dest => dest.CategoryDTO.Id, 
                     opt => opt.MapFrom(
@@ -18,7 +20,7 @@ namespace CategoryService.Mapper
                     )
                 .ForPath( dest => dest.CategoryDTO.Name, opt => opt.Ignore());
 
-            CreateMap<Article, ArticlePublishedDTO>()
+            CreateMap<ArticleDTO, ArticlePublishedDTO>()
                 .ForMember(dest => dest.Event, opt => opt.Ignore());
         }
     }

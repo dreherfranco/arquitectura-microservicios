@@ -53,8 +53,8 @@ namespace ArticleService.Controllers
             return Ok(articleDTO);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ArticleDTO>> CreatePlatform(ArticleCreateDTO articleCreateDTO)
+        [HttpPost("create")]
+        public async Task<ActionResult<ArticleDTO>> CreatePlatform([FromBody]ArticleCreateDTO articleCreateDTO)
         {
             var article = mapper.Map<Article>(articleCreateDTO);
             article = await repository.Add(article);
