@@ -34,8 +34,8 @@ namespace CategoryService.DbConfiguration
                 Console.WriteLine("--> Seeding Data...");
 
                 context.Categories.AddRange(
-                    new Category(){ Id=1, Name="Microprocesadores" },
-                    new Category(){ Id=2, Name="RAMs" }                
+                    new Category(){ Name="Microprocesadores" },
+                    new Category(){ Name="RAMs" }                
                 );
 
                 context.SaveChanges();
